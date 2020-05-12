@@ -6,8 +6,7 @@ const EmployeeSchema = new mongoose.Schema({
     birthday_date_employee: Date,
     cpf: {
         type: String,
-        required: true,
-        index: true,
+        required: true
     },
     contract_date_employee: Date,
     address_employee: String,
