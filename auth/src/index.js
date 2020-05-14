@@ -2,8 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const routes = require('./routes');
+require("dotenv").config();
 
-mongoose.connect("mongodb+srv://api:36756933@cluster1-g32cs.mongodb.net/employee?retryWrites=true&w=majority", {
+mongoose.connect(`${process.env.DB_CONNECTION}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: true,
@@ -12,8 +13,8 @@ mongoose.connect("mongodb+srv://api:36756933@cluster1-g32cs.mongodb.net/employee
 const app = express();
 
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 app.use(routes);
 
-const PORT = 3334
+const PORT = process.env.PORT
 app.listen(PORT, () =>{console.log('Server running at port: ' + PORT)});
