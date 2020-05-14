@@ -1,20 +1,21 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const routes = require('./routes');
+const express = require('express')
+const mongoose = require('mongoose')
+const cors = require('cors')
+const routes = require('./routes')
+require('dotenv').config()
 
-const app_employee_register = express();
+const app = express()
 
-mongoose.connect("mongodb+srv://api:36756933@cluster1-g32cs.mongodb.net/employee?retryWrites=true&w=majority", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: true,
-});
+mongoose.connect(`${process.env.DB_CONNECTION}`, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: true
+})
 
-app_employee_register.use(express.json());
-app_employee_register.use(cors()); //Add host for connection with this backend.
-app_employee_register.use(routes);
+app.use(express.json())
+app.use(cors())
+app.use(routes)
 
+const PORT = `${process.env.PORT}`
 
-const PORT = 3333;
-app_employee_register.listen(PORT, () => console.log(`Application Employee Register Running at port ${PORT}`));
+app.listen(PORT, () => console.log(`Application Employee Register Running at port ${PORT}`))
