@@ -7,87 +7,75 @@ const secretKey = "68dfe874e23514b88da48f07f0eb85e6";
 async function signIn(request, response) {
 	let { user, password } = request.body;
 
-	if(password){
+	if (password) {
 		password = md5(password);
-		
+
 		try {
 			let verifyUser = await EmployeeAuthentication.findOne({ user })
 			if (verifyUser) {
 				if (verifyUser.password === password) {
-					await jwt.sign({ user, password }, secretKey, { expiresIn: '40s' }, (error, token) => {
+					await jwt.sign({ user, password }, secretKey, { expiresIn: '2h' }, (error, token) => {
 						if (error) {
-							return response.json({
-								'Warning': 'Server error ->' + error,
-								'ErrorCode': 500
-							})
+							//Server Error
+							console.log('error', error)
+
+							return response.sendStatus(500);
 						} else {
 							response.set("Authorization", `Bearer ${token}`)
-							response.json({
-								'User Authorized': user,
-								'PassCode': 200 //Alter to send status 
-							});
+							//User Authorizated
+							return response.sendStatus(200);
 						}
 					})
-	
+
 				} else {
-					return response.json({
-						'Password': 'Wrong Password',
-						'ErrorCode': 400
-					})
+					//Wrong Password
+					return response.sendStatus(400);
+
 				}
-	
+
 			} else {
-				response.json({
-					'Warning': 'User not registred!',
-					'ErrorCode': 403
-				})
+				//User not Registred
+				return response.sendStatus(403);
 			}
-	
+
 		} catch (error) {
-			console.log(error);
-			response.json({
-				'Warning': 'Server error ->' + error,
-				'ErrorCode': 500
-			})
+			//Server Error
+			return response.sendStatus(500);
 		}
-	}else{
-		return response.json({
-			'Warning': 'Password not found',
-			'ErrorCode': 400
-		}) 
+	} else {
+		//Password not informed
+		return response.sendStatus(400);
 	}
 
 }
 
 async function signUp(request, response) {
-	console.log('Request body in auth ', request)
-
 	let { user, password } = request.body
-	password = md5(password);
 
-	try {
+	if (password) {
+		password = md5(password);
+		try {
 
-		let new_user = await EmployeeAuthentication.findOne({ user })
+			let new_user = await EmployeeAuthentication.findOne({ user })
 
-		if (!new_user) {
-			new_user = await EmployeeAuthentication.create({ user, password });
-			return response.json({
-				"User Create": new_user,
-				"PassCode": 201
-			});
-		} else {
-			return response.json({
-				'Warning': 'User already registred!',
-				'ErrorCode': 400
-			})
+			if (!new_user) {
+				new_user = await EmployeeAuthentication.create({ user, password });
+				//User created
+				return response.sendStatus(201);
+			} else {
+				//User already created
+				return response.sendStatus(400)
+			}
+
+
+		} catch (error) {
+			//Server Error
+			return response.sendStatus(500)
 		}
+	} else {
+		//Password not informed
+		return response.sendStatus(400);
 
-
-	} catch (error) {
-		return response.json({
-			'Warning': 'Server error ->' + error,
-			'ErrorCode': 500
-		})
 	}
 
 }
