@@ -5,14 +5,19 @@ require('dotenv').config()
 const secretKey = '68dfe874e23514b88da48f07f0eb85e6'
 
 async function index (request, response) {
+  let errorCode = 0;
+
   const isAuthenticate = jwt.verify(request.token, secretKey, (error) => {
     if (error) {
-      console.log('Error VerifyToken ->', error)
-      // Verfiy 'JsonWebTokenError'
-      // Verify 'TokenExpiredError'
-      return false
+      console.log('Error VerifyToken ->', error.name)
+      if(error.name === 'JsonWebTokenError'){
+        errorCode = 400;
+      }else{
+        errorCode = 403;
+      }
+      return false;
     } else {
-      return true
+      return true;
     }
   })
 
@@ -21,22 +26,27 @@ async function index (request, response) {
       const Employees = await Employee.find()
       return response.json(Employees)
     } catch (err) {
-      console.log('Error server ->', err)
+      return response.sendStatus(500);
     }
   } else {
-    return response.sendStatus(403)
+    return response.sendStatus(errorCode)
   }
 };
 
 async function show (request, response) {
+  let errorCode = 0;
+
   const isAuthenticate = jwt.verify(request.token, secretKey, (error) => {
     if (error) {
       console.log('Error VerifyToken ->', error)
-      // Verfiy 'JsonWebTokenError'
-      // Verify 'TokenExpiredError'
-      return false
+      if(error.name === 'JsonWebTokenError'){
+        errorCode = 400;
+      }else{
+        errorCode = 403;
+      }
+      return false;
     } else {
-      return true
+      return true;
     }
   })
 
@@ -44,29 +54,35 @@ async function show (request, response) {
     const { cpf } = request.params
 
     try {
-      let Employee_unique = await Employee.findOne({ cpf })
+      let EmployeeUnique = await Employee.findOne({ cpf })
 
       // Case not found
-      if (Employee_unique === null) {
-        Employee_unique = { Aviso: 'Funcionário não Encontrado!' }
-        return response.json(Employee_unique)
+      if (EmployeeUnique === null) {
+        return response.sendStatus(404);
+      }else{
+        return response.json(EmployeeUnique);
       }
 
-      return response.json(Employee_unique)
     } catch (err) {
       console.log('Server error ->  ', err)
+      return response.sendStatus(500);
     }
   } else {
-    return response.sendStatus(403)
+    return response.sendStatus(errorCode);
   }
 };
 
 async function store (request, response) {
+  let errorCode = 0;
+
   const isAuthenticate = jwt.verify(request.token, secretKey, (error) => {
     if (error) {
       console.log('Error VerifyToken ->', error)
-      // Verfiy 'JsonWebTokenError'
-      // Verify 'TokenExpiredError'
+      if(error.name === 'JsonWebTokenError'){
+        errorCode = 400;
+      }else{
+        errorCode = 403;
+      }
       return false
     } else {
       return true
@@ -103,25 +119,31 @@ async function store (request, response) {
           sector_employee,
           employee_is_active
         })
-      } else {
-        new_employee = { Aviso: 'Usuário já cadastrado' }
-      };
 
-      return response.json(new_employee)
+        return response.json(new_employee)
+      } else {
+        return response.sendStatus(409);
+      };
     } catch (err) {
-      console.log('Server error ->  ', err)
+      console.log('Server error ->  ', err);
+      return response.sendStatus(500);
     }
   } else {
-    return response.sendStatus(403)
+    return response.sendStatus(errorCode);
   }
 };
 
 async function update (request, response) {
+  let errorCode = 0;
+
   const isAuthenticate = jwt.verify(request.token, secretKey, (error) => {
     if (error) {
       console.log('Error VerifyToken ->', error)
-      // Verfiy 'JsonWebTokenError'
-      // Verify 'TokenExpiredError'
+      if(error.name === 'JsonWebTokenError'){
+        errorCode = 400;
+      }else{
+        errorCode = 403;
+      }
       return false
     } else {
       return true
@@ -137,16 +159,16 @@ async function update (request, response) {
 
       if (update_employee) {
         const { name_employee } = await Employee.findOneAndUpdate({ cpf }, updates)
-        update_employee = { 'Funcionário Alterado': name_employee }
+        return  response.sendStatus(200);
       } else {
-        update_employee = { Aviso: 'Funcionário não encontrado!' }
+        return response.sendStatus(404);
       };
-      return response.json(update_employee)
     } catch (err) {
-      console.log('Server error ->  ', err)
+      console.log('Server error ->  ', err);
+      return response.sendStatus(500);
     };
   } else {
-    return response.sendStatus(403)
+    return response.sendStatus(errorCode);
   }
 };
 
@@ -154,11 +176,14 @@ async function destroy (request, response) {
   const isAuthenticate = jwt.verify(request.token, secretKey, (error) => {
     if (error) {
       console.log('Error VerifyToken ->', error)
-      // Verfiy 'JsonWebTokenError'
-      // Verify 'TokenExpiredError'
-      return false
+      if(error.name === 'JsonWebTokenError'){
+        errorCode = 400;
+      }else{
+        errorCode = 403;
+      }
+      return false;
     } else {
-      return true
+      return true;
     }
   })
 
@@ -171,16 +196,16 @@ async function destroy (request, response) {
 
       if (delete_employee) {
         delete_employee = await Employee.findOneAndDelete({ cpf })
+        return response.sendStatus(200);
       } else {
-        delete_employee = { Aviso: 'Funcionário inexistente!' }
-      }
-
-      return response.json(delete_employee)
+        return response.sendStatus(404);
+      };
     } catch (err) {
-      console.log('Server error ->  ', err)
+      console.log('Server error ->  ', err);
+      return response.sendStatus(500);
     };
   } else {
-    return response.sendStatus(403)
+    return response.sendStatus(errorCode);
   }
 };
 
