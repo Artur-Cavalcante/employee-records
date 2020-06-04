@@ -8,13 +8,13 @@ async function signIn(request, response) {
 	let { user, password } = request.body;
 
 	if (password) {
-		password = md5(password);
+		hashPassword = md5(password);
 
 		try {
 			let verifyUser = await EmployeeAuthentication.findOne({ user })
 			if (verifyUser) {
-				if (verifyUser.password === password) {
-					await jwt.sign({ user, password }, process.env.SECRET_KEY, { expiresIn: '2h' }, (error, token) => {
+				if (verifyUser.password === hashPassword) {
+					await jwt.sign({ user }, process.env.SECRET_KEY, { expiresIn: '2h' }, (error, token) => {
 						if (error) {
 							//Server Error
 							console.log('error', error)
@@ -27,7 +27,7 @@ async function signIn(request, response) {
 					})
 				} else {
 					//Wrong Password
-					return response.sendStatus(400);
+					return response.sendStatus(401);
 				}
 			} else {
 				//User not Registred
@@ -55,7 +55,7 @@ async function signUp(request, response) {
 				return response.sendStatus(201);
 			} else {
 				//User already created
-				return response.sendStatus(400)
+				return response.sendStatus(409)
 			}
 		} catch (error) {
 			//Server Error
