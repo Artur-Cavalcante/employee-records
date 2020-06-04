@@ -1,8 +1,8 @@
 const md5 = require('md5');
 const EmployeeAuthentication = require('../models/EmployeeAuthentication');
 const jwt = require('jsonwebtoken');
+require("dotenv").config();
 
-const secretKey = "68dfe874e23514b88da48f07f0eb85e6";
 
 async function signIn(request, response) {
 	let { user, password } = request.body;
@@ -14,7 +14,7 @@ async function signIn(request, response) {
 			let verifyUser = await EmployeeAuthentication.findOne({ user })
 			if (verifyUser) {
 				if (verifyUser.password === password) {
-					await jwt.sign({ user, password }, secretKey, { expiresIn: '2h' }, (error, token) => {
+					await jwt.sign({ user, password }, process.env.SECRET_KEY, { expiresIn: '2h' }, (error, token) => {
 						if (error) {
 							//Server Error
 							console.log('error', error)
