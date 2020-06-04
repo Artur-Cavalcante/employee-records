@@ -18,7 +18,6 @@ async function signIn(request, response) {
 						if (error) {
 							//Server Error
 							console.log('error', error)
-
 							return response.sendStatus(500);
 						} else {
 							response.set("Authorization", `Bearer ${token}`)
@@ -26,18 +25,14 @@ async function signIn(request, response) {
 							return response.sendStatus(200);
 						}
 					})
-
 				} else {
 					//Wrong Password
 					return response.sendStatus(400);
-
 				}
-
 			} else {
 				//User not Registred
 				return response.sendStatus(403);
 			}
-
 		} catch (error) {
 			//Server Error
 			return response.sendStatus(500);
@@ -46,18 +41,14 @@ async function signIn(request, response) {
 		//Password not informed
 		return response.sendStatus(400);
 	}
-
 }
 
 async function signUp(request, response) {
 	let { user, password } = request.body
-
 	if (password) {
 		password = md5(password);
 		try {
-
 			let new_user = await EmployeeAuthentication.findOne({ user })
-
 			if (!new_user) {
 				new_user = await EmployeeAuthentication.create({ user, password });
 				//User created
@@ -66,8 +57,6 @@ async function signUp(request, response) {
 				//User already created
 				return response.sendStatus(400)
 			}
-
-
 		} catch (error) {
 			//Server Error
 			return response.sendStatus(500)
@@ -75,9 +64,6 @@ async function signUp(request, response) {
 	} else {
 		//Password not informed
 		return response.sendStatus(400);
-
 	}
-
 }
-
 module.exports = { signIn, signUp }
