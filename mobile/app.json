@@ -8,7 +8,8 @@
       "web"
     ],
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
+    "primaryColor" : "#ff7913",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
@@ -23,6 +24,10 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.arturcavalcante.employeerecords",
+      "versionCode": 1
     }
   }
 }
