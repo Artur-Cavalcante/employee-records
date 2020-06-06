@@ -1,6 +1,6 @@
 ### Employee Records's Authentication Server 
 
-#### Authentication Server using JWT to application Employee Records
+#### Authentication Server using JWT to Employee Records application 
 
 ---
 
