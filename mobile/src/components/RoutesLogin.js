@@ -1,27 +1,31 @@
-import Login from './Login/Login';
-import Signup from './Login/Signup/Signup';
-
 import React from 'react';
-
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import Login from './LoginStack/Login';
+import SignUp from './LoginStack/SignUp/SignUp';
 
 const LoginStack = createStackNavigator();
 
-export default function RoutesLoginPage({ history }) {
+export default function RoutesLogin() {
     return (
         <NavigationContainer>
             <LoginStack.Navigator>
                 <LoginStack.Screen
-                    name="Login"
+                    name='Login'
                     component={Login}
                     options={{ headerShown: false }}
                 />
                 <LoginStack.Screen
-                    name="Signup"
-                    component={Signup}
+                    name='SignUp'
+                    component={SignUp}
+                    options={{
+                        headerTitleAlign: 'center',
+                        headerStyle: {
+                            backgroundColor: '#ff7913'
+                        }
+                    }}
                 />
             </LoginStack.Navigator>
         </NavigationContainer>
