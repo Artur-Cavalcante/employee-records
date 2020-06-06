@@ -2,12 +2,10 @@ const Employee = require('../models/Employee')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
-const secretKey = '68dfe874e23514b88da48f07f0eb85e6'
 
 async function index (request, response) {
   let errorCode = 0;
-
-  const isAuthenticate = jwt.verify(request.token, secretKey, (error) => {
+  const isAuthenticate = jwt.verify(request.token, process.env.SECRET_KEY, (error) => {
     if (error) {
       console.log('Error VerifyToken ->', error.name)
       if(error.name === 'JsonWebTokenError'){
@@ -36,7 +34,7 @@ async function index (request, response) {
 async function show (request, response) {
   let errorCode = 0;
 
-  const isAuthenticate = jwt.verify(request.token, secretKey, (error) => {
+  const isAuthenticate = jwt.verify(request.token, process.env.SECRET_KEY, (error) => {
     if (error) {
       console.log('Error VerifyToken ->', error)
       if(error.name === 'JsonWebTokenError'){
@@ -75,7 +73,7 @@ async function show (request, response) {
 async function store (request, response) {
   let errorCode = 0;
 
-  const isAuthenticate = jwt.verify(request.token, secretKey, (error) => {
+  const isAuthenticate = jwt.verify(request.token, process.env.SECRET_KEY, (error) => {
     if (error) {
       console.log('Error VerifyToken ->', error)
       if(error.name === 'JsonWebTokenError'){
@@ -107,7 +105,7 @@ async function store (request, response) {
       let new_employee = await Employee.findOne({ cpf })
 
       if (!new_employee) {
-        new_employee = await Employee.create({
+        await Employee.create({
           name_employee,
           number_phone_employee,
           birthday_date_employee,
@@ -120,7 +118,7 @@ async function store (request, response) {
           employee_is_active
         })
 
-        return response.json(new_employee)
+        return response.json(200)
       } else {
         return response.sendStatus(409);
       };
@@ -136,7 +134,7 @@ async function store (request, response) {
 async function update (request, response) {
   let errorCode = 0;
 
-  const isAuthenticate = jwt.verify(request.token, secretKey, (error) => {
+  const isAuthenticate = jwt.verify(request.token, process.env.SECRET_KEY, (error) => {
     if (error) {
       console.log('Error VerifyToken ->', error)
       if(error.name === 'JsonWebTokenError'){
@@ -158,7 +156,7 @@ async function update (request, response) {
       let update_employee = await Employee.findOne({ cpf })
 
       if (update_employee) {
-        const { name_employee } = await Employee.findOneAndUpdate({ cpf }, updates)
+        await Employee.findOneAndUpdate({ cpf }, updates)
         return  response.sendStatus(200);
       } else {
         return response.sendStatus(404);
@@ -173,7 +171,7 @@ async function update (request, response) {
 };
 
 async function destroy (request, response) {
-  const isAuthenticate = jwt.verify(request.token, secretKey, (error) => {
+  const isAuthenticate = jwt.verify(request.token, process.env.SECRET_KEY, (error) => {
     if (error) {
       console.log('Error VerifyToken ->', error)
       if(error.name === 'JsonWebTokenError'){
@@ -189,7 +187,6 @@ async function destroy (request, response) {
 
   if (isAuthenticate === true) {
     const { cpf } = request.body
-    console.log('Cpf', request.body)
 
     try {
       let delete_employee = await Employee.findOne({ cpf })
