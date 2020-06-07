@@ -1,6 +1,6 @@
 function handleTokenMiddleware(request, response, next) {
     let bearerHeader = request.headers['authorization']
-
+    console.log("Request ->", request.headers);
     if (bearerHeader) {
         const bearer = bearerHeader.split(' ');
         const bearerToken = bearer[1];
