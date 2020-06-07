@@ -5,7 +5,7 @@ require('dotenv').config()
 
 async function index (request, response) {
   let errorCode = 0;
-  console.log("Env", process.env.SECRET_KEY)
+
   const isAuthenticate = jwt.verify(request.token, process.env.SECRET_KEY, (error) => {
     if (error) {
       console.log('Error VerifyToken ->', error.name)
