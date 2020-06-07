@@ -1,28 +1,40 @@
-<div align="center">
-    <img  width="220px" height="200px" src="https://raw.githubusercontent.com/Artur-Cavalcante/employee-records/master/mobile/assets/thumb.svg"/>
+### Employee Records's Backend Server 
+
+<div>
+    <img src="https://img.shields.io/badge/dynamic/json?color=sucess&label=Express&query=dependencies.express&url=https%3A%2F%2Fraw.githubusercontent.com%2FArtur-Cavalcante%2Femployee-records%2Fmaster%2Fbackend%2Fpackage.json"/>
+    <img src="https://img.shields.io/badge/dynamic/json?color=informational&label=Mongoose&query=dependencies.mongoose&url=https%3A%2F%2Fraw.githubusercontent.com%2FArtur-Cavalcante%2Femployee-records%2Fmaster%2Fbackend%2Fpackage.json"/>
+    <img src="https://img.shields.io/badge/dynamic/json?color=important&label=JWT&query=dependencies.jsonwebtoken&url=https%3A%2F%2Fraw.githubusercontent.com%2FArtur-Cavalcante%2Femployee-records%2Fmaster%2Fauth%2Fpackage.json"/>
 </div>
-<div align="center">
-    <img src="https://img.shields.io/badge/dynamic/json?color=blueviolet&label=Expo&query=dependencies.expo&url=https%3A%2F%2Fraw.githubusercontent.com%2FArtur-Cavalcante%2Femployee-records%2Fmaster%2Fmobile%2Fpackage.json"/>
-    <img src="https://img.shields.io/badge/dynamic/json?color=sucess&label=Express&query=dependencies.express&url=https%3A%2F%2Fraw.githubusercontent.com%2FArtur-Cavalcante%2Femployee-records%2Fmaster%2Fpackage.json"/>
-    <img src="https://img.shields.io/badge/dynamic/json?color=orange&label=JWT&query=dependencies.jsonwebtoken&url=https%3A%2F%2Fraw.githubusercontent.com%2FArtur-Cavalcante%2Femployee-records%2Fmaster%2Fauth%2Fpackage.json"/>
-</div>
+
+#### Backend Server to handle with CRUD for Employee Records application 
 
 ---
 
-Mobile application written in React Native, that handle with Employee Records, using an [Authentication Server](https://github.com/Artur-Cavalcante/employee-records/tree/master/auth) and [Backend Server](https://github.com/Artur-Cavalcante/employee-records/tree/master/backend) written in Node.js to C.R.U.D in the database.
+> If user is authenticate with token, he will to able to use throught of HTTP methods according informations below.
 
-<div align="center">
-    <img width="239px" height="680px"  src="https://raw.githubusercontent.com/Artur-Cavalcante/employee-records/master/mobile/assets/Login.svg"/> 
-    <img width="250px" height="680px"  src="https://raw.githubusercontent.com/Artur-Cavalcante/employee-records/master/mobile/assets/Home.svg"/>
-</div>
+  
+HTTP Method  | Endpoint              | Description             | Request Body             | Response Body 
+------------ | --------------        | -------------           | ------------------       | ------------------   
+GET          | /api/employee         | Get all records         | None                     | All employee records 
+GET          | /api/employee:{ cpf } | Get unique record       | None                     | A unique record
+PUT          | /api/employee         | Alter a field in record | Employee's cpf and field | None
+POST         | /api/employee         | Create a record         | Employee's Informations  | None
+DELETE       | /api/employee         | Delete a record         | Employee's Cpf           | None
+  
 
-### Flow from Token
-    
-* 1- Client Get Token 
-* 2- Back to Smartphone 
-* 3- Send a request with token to Backend server to check it 
-* 4- If token ok, backend will to do   C.R.U.D
+Example Request Body to POST:   
 
-<div>
-    <img  src="https://raw.githubusercontent.com/Artur-Cavalcante/employee-records/master/mobile/assets/diagram.svg"/> 
-</div>
+```
+    {
+	    "name_employee": "Artur",
+	    "number_phone_employee": "(79) 999804-1987",
+	    "birthday_date_employee": "08/04/2002",
+	    "cpf": "000.000.000-00",
+	    "contract_date_employee": "01/02/2010",
+	    "address_employee": "250 5th Ave, New York, NY 10118, USA",
+	    "occupation_employee": "Pizza delivery",
+	    "salary_employee": "440.00",
+	    "sector_employee": "Delivery",
+	    "employee_is_active": "No"
+    }
+```

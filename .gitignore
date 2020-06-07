@@ -2,7 +2,6 @@
 logs
 *.log
 npm-debug.log*
-yarn.lock
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
@@ -103,6 +102,3 @@ dist
 
 # TernJS port file
 .tern-port
-
-#Expo
-.expo/*
