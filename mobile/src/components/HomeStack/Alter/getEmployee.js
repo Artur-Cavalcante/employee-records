@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import RouteRedirectLogin from '../../../utils/RouteRedirectLogin';
 import setGetToken from '../../../utils/setGetToken';
 import backendApi from '../../../services/backendApi';
