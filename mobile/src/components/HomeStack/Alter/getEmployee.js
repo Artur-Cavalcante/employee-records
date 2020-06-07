@@ -2,12 +2,13 @@ import axios from 'axios';
 
 import RouteRedirectLogin from '../../../utils/RouteRedirectLogin';
 import setGetToken from '../../../utils/setGetToken';
+import backendApi from '../../../services/backendApi';
 
 export default async function getEmployee(params) {
     params.setShowSpinner(true);
     let token = await setGetToken('token');
-    await axios
-        .get('http://192.168.15.3:3333/api/employee/' + `${params.employeeCpf}`, {
+    await backendApi()
+        .get('/api/employee/' + `${params.employeeCpf}`,{
             headers: { authorization: token }
         }, {
             timeout: 10000
