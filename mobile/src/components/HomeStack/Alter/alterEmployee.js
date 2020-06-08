@@ -24,6 +24,7 @@ export default  async function alterEmployee(params) {
             timeout: 10000
         })
         .then(() => {
+            params.setRequestErrorCode(false);
             params.setShowForm(false);
             params.setShowResponseBox(true);
         })
