@@ -65,7 +65,8 @@ export default function Alter() {
                     setShowResponseBox,
                     setEmployeeInfo,
                     setRequestErrorCode,
-                    setRedirect
+                    setRedirect,
+                    setErrorTextCpf,
                 }) :
                 setShowSpinner(false);
         }}
